@@ -14,9 +14,24 @@
 	<h2 class="py-4 font-weight-normal">Personal Info</h2>
 	<div class="form-group bg-light p-5">{{ infoform|crispy }}</div>
 	<h2 class="py-4 font-weight-normal">Education</h2>
-	<div class="form-group bg-light p-5">{{ educationform|crispy }}</div>
+	<div class="form-group bg-light p-5">
+		<h3 class="py-4 font-weight-normal">Education</h3>
+		{{ educationform|crispy }}
+		<h3 class="py-4 font-weight-normal">Education2</h3>
+		{{ education2form|crispy }}
+		<h3 class="py-4 font-weight-normal">Education3</h3>
+		{{ education3form|crispy }}</div>
+	
+
 	<h2 class="py-4 font-weight-normal">Experience</h2>
-	<div class="form-group bg-light p-5">{{ experienceform|crispy }}</div>
+	<div class="form-group bg-light p-5">
+		<h3 class="py-4 font-weight-normal">Experience</h3>
+		{{ experienceform|crispy }}
+		<h3 class="py-4 font-weight-normal">Experience2</h3>
+		{{ experience2form|crispy }}
+		<h3 class="py-4 font-weight-normal">Experience3</h3>
+		{{ experience3form|crispy }}
+	</div>
 	<h2 class="py-4 font-weight-normal">Other</h2>
 	<div class="form-group bg-light p-5">{{ otherform|crispy }}</div>
 	<h2 class="py-4 font-weight-normal">Letter</h2>

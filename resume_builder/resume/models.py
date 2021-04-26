@@ -19,6 +19,25 @@ class Education(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField(default='')
+class Education2(models.Model):
+   
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    detail2 = models.CharField(max_length=255,default='')
+    institution2 = models.CharField(max_length=255,default='')
+    level2 = models.CharField(max_length=255,default='')
+    start_date2 = models.DateField(blank=True, null=True)
+    end_date2 = models.DateField(blank=True, null=True)
+    description2 = models.TextField(default='')
+
+class Education3(models.Model):
+   
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    detail3 = models.CharField(max_length=255,default='')
+    institution3 = models.CharField(max_length=255,default='')
+    level3 = models.CharField(max_length=255,default='')
+    start_date3 = models.DateField(blank=True, null=True)
+    end_date3 = models.DateField(blank=True, null=True)
+    description3 = models.TextField(default='')
 
 
 class Experience(models.Model):
@@ -30,6 +49,26 @@ class Experience(models.Model):
     start_Date = models.DateField(blank=True, null=True)
     end_Date = models.DateField(blank=True, null=True)
     job_description = models.TextField(default='')
+
+class Experience2(models.Model):
+                   
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    job_detail2 = models.CharField(max_length=255,default='')
+    company2 = models.CharField(max_length=255,default='')
+    job_title2 = models.CharField(max_length=255,default='')
+    start_Date2 = models.DateField(blank=True, null=True)
+    end_Date2 = models.DateField(blank=True, null=True)
+    job_description2 = models.TextField(default='')
+
+class Experience3(models.Model):
+                   
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    job_detail3 = models.CharField(max_length=255,default='')
+    company3 = models.CharField(max_length=255,default='')
+    job_title3 = models.CharField(max_length=255,default='')
+    start_Date3 = models.DateField(blank=True, null=True)
+    end_Date3 = models.DateField(blank=True, null=True)
+    job_description3 = models.TextField(default='')
 
 
 class contact(models.Model):

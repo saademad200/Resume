@@ -8,24 +8,23 @@ from django.conf import settings
 import numpy as np
 from PIL import Image
 
-from .models import Person, Education, Experience, Other, contact, personal_info
-from .forms import PersonForm, EducationForm, ExperienceForm, OtherForm, ContactForm, InfoForm,LetterForm
+from .forms import PersonForm, EducationForm,Education2Form,Education3Form, ExperienceForm,Experience2Form,Experience3Form, OtherForm, ContactForm, InfoForm,LetterForm
 
 
 def resumeFill(request):
     if request.method == 'POST':
         personform = PersonForm(request.POST,request.FILES)
         educationform = EducationForm(request.POST)
+        education2form = Education2Form(request.POST)
+        education3form = Education3Form(request.POST)
         experienceform = ExperienceForm(request.POST)
+        experience2form = Experience2Form(request.POST)
+        experience3form = Experience3Form(request.POST)
         otherform = OtherForm(request.POST)
         infoform = InfoForm(request.POST)
         contactform = ContactForm(request.POST)
         letterform = LetterForm(request.POST,request.FILES)
         
-        print(bool(request.FILES))
-
-      
-            
        
         if personform.is_valid() and bool(request.FILES):
             
@@ -36,27 +35,6 @@ def resumeFill(request):
             cv2.imwrite(settings.MEDIA_ROOT+'/photo.jpg',cv_img[:,:,::-1])
             personform.cleaned_data['picture']='photo.jpg'
             
-            
-        '''
-        if educationform.is_valid():
-            #educationform.save()
-            print('education',educationform.cleaned_data)
-            
-        if experienceform.is_valid():
-            #experienceform.save()
-            print('experience',experienceform.cleaned_data)
-            
-        if otherform.is_valid():
-            #otherform.save()
-            print('other',otherform.cleaned_data)
-            
-        if infoform.is_valid():
-            #infoform.save()
-            print('info',infoform.cleaned_data)
-                
-        if contactform.is_valid():
-            #contactform.save()
-            print('contact',contactform.cleaned_data)'''
         if letterform.is_valid() and bool(request.FILES):
             filename = letterform.cleaned_data['stamp']
             pil_img = Image.open(filename).convert('RGB')
@@ -66,8 +44,10 @@ def resumeFill(request):
             letterform.cleaned_data['stamp']='stamp.jpg'
             
         if (
-            educationform.is_valid() and personform.is_valid() 
-            and experienceform.is_valid() and otherform.is_valid() 
+            educationform.is_valid() and education2form.is_valid() and 
+            education3form.is_valid() and  personform.is_valid() 
+            and experienceform.is_valid() and experience2form.is_valid()
+            and experience3form.is_valid() and otherform.is_valid() 
             and infoform.is_valid() and contactform.is_valid() 
             and letterform.is_valid()
              ):
@@ -115,20 +95,20 @@ def resumeFill(request):
                   'date': f"{experienceform.cleaned_data['start_Date'].year}-{experienceform.cleaned_data['end_Date'].year}"
                 },
                 {
-                  'title':experienceform.cleaned_data['company'],
-                  'subtitle':experienceform.cleaned_data['job_title'],
-                  'detail':experienceform.cleaned_data['job_detail'],
-                  'description':experienceform.cleaned_data['job_description'], 
+                  'title':experience2form.cleaned_data['company2'],
+                  'subtitle':experience2form.cleaned_data['job_title2'],
+                  'detail':experience2form.cleaned_data['job_detail2'],
+                  'description':experience2form.cleaned_data['job_description2'], 
                   'highlight':True,
-                  'date': f"{experienceform.cleaned_data['start_Date'].year}-{experienceform.cleaned_data['end_Date'].year}"
+                  'date': f"{experience2form.cleaned_data['start_Date2'].year}-{experience2form.cleaned_data['end_Date2'].year}"
                 },
                 {
-                  'title':experienceform.cleaned_data['company'],
-                  'subtitle':experienceform.cleaned_data['job_title'],
-                  'detail':experienceform.cleaned_data['job_detail'],
-                  'description':experienceform.cleaned_data['job_description'], 
+                  'title':experience3form.cleaned_data['company3'],
+                  'subtitle':experience3form.cleaned_data['job_title3'],
+                  'detail':experience3form.cleaned_data['job_detail3'],
+                  'description':experience3form.cleaned_data['job_description3'], 
                   'highlight':True,
-                  'date': f"{experienceform.cleaned_data['start_Date'].year}-{experienceform.cleaned_data['end_Date'].year}"
+                  'date': f"{experience3form.cleaned_data['start_Date3'].year}-{experience3form.cleaned_data['end_Date3'].year}"
                 }
             ]
             Experience_={}
@@ -143,20 +123,20 @@ def resumeFill(request):
                   'date': f"{educationform.cleaned_data['start_date'].year}-{educationform.cleaned_data['end_date'].year}"
                 },
                 {
-                  'title':educationform.cleaned_data['institution'],
-                  'subtitle':educationform.cleaned_data['level'],
-                  'detail':educationform.cleaned_data['detail'],
-                  'description':educationform.cleaned_data['description'], 
+                  'title':education2form.cleaned_data['institution2'],
+                  'subtitle':education2form.cleaned_data['level2'],
+                  'detail':education2form.cleaned_data['detail2'],
+                  'description':education2form.cleaned_data['description2'], 
                   'highlight':True,
-                  'date': f"{educationform.cleaned_data['start_date'].year}-{educationform.cleaned_data['end_date'].year}"
+                  'date': f"{education2form.cleaned_data['start_date2'].year}-{education2form.cleaned_data['end_date2'].year}"
                 },
                 {
-                  'title':educationform.cleaned_data['institution'],
-                  'subtitle':educationform.cleaned_data['level'],
-                  'detail':educationform.cleaned_data['detail'],
-                  'description':educationform.cleaned_data['description'], 
+                  'title':education3form.cleaned_data['institution3'],
+                  'subtitle':education3form.cleaned_data['level3'],
+                  'detail':education3form.cleaned_data['detail3'],
+                  'description':education3form.cleaned_data['description3'], 
                   'highlight':True,
-                  'date': f"{educationform.cleaned_data['start_date'].year}-{educationform.cleaned_data['end_date'].year}"
+                  'date': f"{education3form.cleaned_data['start_date3'].year}-{education3form.cleaned_data['end_date3'].year}"
                 }
             ]
             Education_={}
@@ -186,7 +166,11 @@ def resumeFill(request):
 
         'personform': PersonForm(),
         'educationform': EducationForm(),
+        'education2form': Education2Form(),
+        'education3form': Education3Form(),
         'experienceform': ExperienceForm(),
+        'experience2form': Experience2Form(),
+        'experience3form': Experience3Form(),
         'otherform': OtherForm(),
         'infoform': InfoForm(),
         'contactform': ContactForm(),
