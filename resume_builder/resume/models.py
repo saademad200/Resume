@@ -44,7 +44,7 @@ class personal_info(models.Model):
     birthday = models.DateField(blank=True, null=True)
     nationality = CountryField(blank_label='(select country)')
     residency = models.CharField(max_length=255,default='')
-    languages = models.CharField(max_length=255) 
+    languages = models.CharField(max_length=255,help_text="Enter Comma Seperated Values") 
 
 
 class Other(models.Model):

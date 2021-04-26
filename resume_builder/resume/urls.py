@@ -5,10 +5,8 @@ from .import views
 
 urlpatterns = [
     # url(r'^$', ,),
-    url(r'', views.resumeFill, name='resume_fill'),
-    url(r'^resumeview', views.resumeView, name='resume_view'),
-
-
+    url('', views.resumeFill, name='resume_fill'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

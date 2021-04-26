@@ -1,27 +1,29 @@
-{% extends 'resume/base.html' %}
+{% extends 'resume/base.html' %} {% block content %}
+{% load crispy_forms_tags %}
+<form
+	action="{% url 'resume_fill' %}"
+	method="POST"
+	class="post-form"
+	enctype="multipart/form-data"
+>
+	{% csrf_token %}
+	<h2 class="py-4 display-4 text-dark font-weight-normal">About</h2>
+	<div class="form-group bg-light p-5">{{ personform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Contact</h2>
+	<div class="form-group bg-light p-5">{{ contactform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Personal Info</h2>
+	<div class="form-group bg-light p-5">{{ infoform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Education</h2>
+	<div class="form-group bg-light p-5">{{ educationform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Experience</h2>
+	<div class="form-group bg-light p-5">{{ experienceform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Other</h2>
+	<div class="form-group bg-light p-5">{{ otherform|crispy }}</div>
+	<h2 class="py-4 font-weight-normal">Letter</h2>
+	<div class="form-group bg-light p-5">{{ letterform|crispy }}</div>
 
-{% block content %}
-
-<form action="{% url 'resume_fill' %}" method="POST" class="post-form" enctype="multipart/form-data">
-    {% csrf_token %}
-     
-
-        {{ personform.as_p }}
-        <h2>Contact</h2>
-        {{ contactform.as_p }}
-
-        <h2>Personal Info</h2>
-        {{ infoform.as_p }}
-      
-        <h2>Education</h2>
-        {{ educationform.as_p }}
-        <h2>Experience</h2>
-        {{ experienceform.as_p }}
-        <h2>Other</h2>
-        {{ otherform.as_p }}
-        <h2>Letter</h2>
-        {{ letterform.as_p }}
-
-        
-        <button type="submit" class="save btn btn-default">Save</button>
-{% endblock %}
+	<button type="submit" class="save btn btn-success" style="width: 100px">
+		Save
+	</button>
+	{% endblock %}
+</form>

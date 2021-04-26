@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.sites.requests import RequestSite
 from .utils import getPDF
+import cv2
 from django.conf import settings
+import numpy as np
+from PIL import Image
 
 from .models import Person, Education, Experience, Other, contact, personal_info
 from .forms import PersonForm, EducationForm, ExperienceForm, OtherForm, ContactForm, InfoForm,LetterForm
@@ -21,10 +24,20 @@ def resumeFill(request):
         
         print(bool(request.FILES))
 
-        if personform.is_valid():
-            print('person',personform.cleaned_data)
-            #personform.save()
-
+      
+            
+       
+        if personform.is_valid() and bool(request.FILES):
+            
+            
+            filename = personform.cleaned_data['picture']
+            pil_img = Image.open(filename).convert('RGB')
+            cv_img = np.array(pil_img)
+            cv2.imwrite(settings.MEDIA_ROOT+'/photo.jpg',cv_img[:,:,::-1])
+            personform.cleaned_data['picture']='photo.jpg'
+            
+            
+        '''
         if educationform.is_valid():
             #educationform.save()
             print('education',educationform.cleaned_data)
@@ -43,10 +56,15 @@ def resumeFill(request):
                 
         if contactform.is_valid():
             #contactform.save()
-            print('contact',contactform.cleaned_data)
-        if letterform.is_valid():
-            #letterform.save()
-            print('letter',letterform.cleaned_data)
+            print('contact',contactform.cleaned_data)'''
+        if letterform.is_valid() and bool(request.FILES):
+            filename = letterform.cleaned_data['stamp']
+            pil_img = Image.open(filename).convert('RGB')
+            cv_img = np.array(pil_img)
+            
+            cv2.imwrite(settings.MEDIA_ROOT+'/stamp.jpg',cv_img[:,:,::-1])
+            letterform.cleaned_data['stamp']='stamp.jpg'
+            
         if (
             educationform.is_valid() and personform.is_valid() 
             and experienceform.is_valid() and otherform.is_valid() 
@@ -161,7 +179,7 @@ def resumeFill(request):
             curriculum.append(Education_)
             curriculum.append(Other_)
             data['curriculum']=curriculum
-            print(data)
+            
             getPDF(data)
 
     return render(request, 'resume/resume_fill.html', {
@@ -177,16 +195,3 @@ def resumeFill(request):
     })
 
 
-def resumeView(request):
-   
-
-    return render(request,'resume/resume_view.html', {
-        'site_name': site_name,
-        'person': person,
-        'education': education,
-        'projectOrJob': projectOrJob,
-        'professionalSkills': professionalSkills,
-        'academics': academics,
-        'areaOfInterest': areaOfInterest,
-    }
-    )  # , context_instance=RequestContext(request))
