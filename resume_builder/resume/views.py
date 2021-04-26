@@ -30,19 +30,32 @@ def resumeFill(request):
             
             
             filename = personform.cleaned_data['picture']
-            pil_img = Image.open(filename).convert('RGB')
+            pil_img = Image.open(filename)
             cv_img = np.array(pil_img)
-            cv2.imwrite(settings.MEDIA_ROOT+'/photo.jpg',cv_img[:,:,::-1])
-            personform.cleaned_data['picture']='photo.jpg'
+            if cv_img.shape[2]==4 and np.mean(cv_img[:,:,0:2]) == 0:
+              
+              cv_img = cv2.bitwise_not(cv_img)
+              cv2.imwrite(settings.MEDIA_ROOT+'/photo.jpg',cv_img[:,:,3])
+              personform.cleaned_data['picture']='photo.jpg'
+              
             
+            else:
+              cv2.imwrite(settings.MEDIA_ROOT+'/photo.jpg',cv_img[:,:,::-1])
+              personform.cleaned_data['picture']='photo.jpg'
+              
         if letterform.is_valid() and bool(request.FILES):
             filename = letterform.cleaned_data['stamp']
-            pil_img = Image.open(filename).convert('RGB')
+            pil_img = Image.open(filename)
             cv_img = np.array(pil_img)
-            
-            cv2.imwrite(settings.MEDIA_ROOT+'/stamp.jpg',cv_img[:,:,::-1])
-            letterform.cleaned_data['stamp']='stamp.jpg'
-            
+            if cv_img.shape[2]==4 and np.mean(cv_img[:,:,0:2]) == 0:
+              
+              cv_img = cv2.bitwise_not(cv_img)
+              cv2.imwrite(settings.MEDIA_ROOT+'/stamp.jpg',cv_img[:,:,3])
+              letterform.cleaned_data['stamp']='stamp.jpg'
+            else:
+              cv2.imwrite(settings.MEDIA_ROOT+'/stamp.jpg',cv_img[:,:,::-1])
+              letterform.cleaned_data['stamp']='stamp.jpg'
+
         if (
             educationform.is_valid() and education2form.is_valid() and 
             education3form.is_valid() and  personform.is_valid() 
@@ -51,7 +64,6 @@ def resumeFill(request):
             and infoform.is_valid() and contactform.is_valid() 
             and letterform.is_valid()
              ):
-            print('valid')
             data = {
                 'photo':settings.MEDIA_ROOT+"/"+ personform.cleaned_data['picture'],
                 'title':personform.cleaned_data['name'],
